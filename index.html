@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./tailwind.css">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Todo App</title>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto p-8 flex flex-col items-center"
+     x-data="{
+        todos: JSON.parse(localStorage.getItem('todos')) || [],
+        UInp: '',
+        checkedTodos: [],
+        saveTodos() {
+            localStorage.setItem('todos', JSON.stringify(this.todos));
+        }
+     }"
+     x-init="saveTodos()"
+>
+    <div class="mb-4">
+        <input type="text"
+               class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5"
+               x-model="UInp" x-ref="UserInput" placeholder="Enter a new todo">
+    </div>
+    <div class="mb-4 flex space-x-4">
+        <button type="button"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-32"
+                x-on:click="todos.push($refs.UserInput.value); UInp = ''; saveTodos()" x-text="'Create Todo'"
+        ></button>
+        <button type="button"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg w-32"
+                x-on:click="todos = todos.filter(todo => !checkedTodos.includes(todo)); saveTodos()" x-text="'Remove Done'"
+        ></button>
+        <button type="button"
+                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg w-32"
+                x-on:click="todos = []; saveTodos()" x-text="'Remove All'"
+        ></button>
+    </div>
+    <div class="space-y-2 w-80">
+        <template x-for="todo in todos" :key="todo">
+            <label class="inline-flex items-center space-x-2 w-full">
+                <input type="checkbox" class="w-5 h-5 accent-teal-600"
+                       x-model="checkedTodos" :value="todo">
+                <span class="text-gray-800" x-text="todo"></span>
+            </label>
+        </template>
+    </div>
+</div>
+</body>
+</html>
