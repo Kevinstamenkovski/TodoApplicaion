@@ -30,7 +30,12 @@
     <div class="mb-4 flex space-x-4">
         <button type="button"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-32"
-                x-on:click="todos.push($refs.UserInput.value); UInp = ''; saveTodos()" x-text="'Create Todo'"
+                x-on:click="
+                if(!$refs.UserInput.value.toString().trim() == ''){
+                    todos.push($refs.UserInput.value); UInp = ''; saveTodos();
+                }else{
+                    alert('Input Not Valid');
+                }" x-text="'Create Todo'"
         ></button>
         <button type="button"
                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg w-32"
